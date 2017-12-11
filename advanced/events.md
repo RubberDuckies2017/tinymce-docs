@@ -426,3 +426,18 @@ tinymce.on('RemoveEditor', function (e) {
 });
 ```
 
+### Drop Event
+
+This event gets fired when editor instances are draged into the target textarea/div.
+
+#### Parameters
+* **fire** `tinymce.Editor` - fire something
+* **on** `tinymce.Editor` - on something
+
+
+Here is an example on how to log something being dropped in the target textarea/div.
+
+```js
+editor.fire('drop'...)
+editor.on('drop'...)
+```
