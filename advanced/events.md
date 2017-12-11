@@ -55,6 +55,8 @@ tinymce.init({
 | [ExecCommand](#execcommand) | core | Fires after a command has been executed. |
 | [PastePreProcess](#pastepreprocess) | [paste]({{ site.baseurl }}/plugins/paste/) | Fires when contents gets pasted into the editor. |
 | [PastePostProcess](#pastepostprocess) | [paste]({{ site.baseurl }}/plugins/paste/) | Fires when contents gets pasted into the editor. |
+| [Fire](#DropEvent) | ? | Fires the drop into the proper area. |
+| [On](#DropEvent) | ? | Fires something something
 > Native means that it's just a wrapped native browser event.
 > Core means that it's a core specific event provided by the editor.
 
