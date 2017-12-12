@@ -53,10 +53,11 @@ tinymce.init({
 | [Dirty](#dirty) | core | Fires when editor contents is being considered dirty. |
 | [Remove](#remove) | core | Fires when the editor is removed. |
 | [ExecCommand](#execcommand) | core | Fires after a command has been executed. |
+| [Fire](#DropEvent) | core | Fires when the drop into the proper area. |
+| [On](#DropEvent) | core | Fires when an event is triggered and acts as a listener |
 | [PastePreProcess](#pastepreprocess) | [paste]({{ site.baseurl }}/plugins/paste/) | Fires when contents gets pasted into the editor. |
 | [PastePostProcess](#pastepostprocess) | [paste]({{ site.baseurl }}/plugins/paste/) | Fires when contents gets pasted into the editor. |
-| [Fire](#DropEvent) | ? | Fires the drop into the proper area. |
-| [On](#DropEvent) | ? | Fires something something
+
 > Native means that it's just a wrapped native browser event.
 > Core means that it's a core specific event provided by the editor.
 
@@ -430,14 +431,25 @@ tinymce.on('RemoveEditor', function (e) {
 
 This event gets fired when editor instances are draged into the target textarea/div.
 
-#### Parameters
-* **fire** `tinymce.Editor` - fire something
-* **on** `tinymce.Editor` - on something
-
-
-Here is an example on how to log something being dropped in the target textarea/div.
+Here is an example unit test on how to log something being dropped in the target textarea/div.
 
 ```js
-editor.fire('drop'...)
-editor.on('drop'...)
+  suite.test("dragstart/dragend override", function (editor) {
+      var result = {};
+      editor.on('dragstart', function (e) {
+        result[e.type] = true;
+      });
+      editor.on('dragend', function (e) {
+        result[e.type] = true;
+      });
+      editor.setContent('<p draggable="true" id="test-paragraph">test paragraph</p>');
+      var ptarget = editor.getDoc().getElementById('test-paragraph');
+      //var targetLoc = editor.getBody();
+      editor.dom.fire(ptarget, 'mousedown', { button: 0, screenX: 50, screenY: 50 });
+      editor.dom.fire(ptarget, 'mousemove', { button: 0, screenX: 0, screenY: 0 });
+      editor.dom.fire(editor.getBody(), 'mouseup');
+      LegacyUnit.equal(editor.getContent(), '<p id="test-paragraph" draggable="true">test paragraph</p>');
+      LegacyUnit.equal(ptarget === null, false, "ptarget is null");
+      LegacyUnit.deepEqual(result, { dragstart: true, dragend: true });
+  });
 ```
